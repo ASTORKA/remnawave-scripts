@@ -1315,6 +1315,12 @@ while [ $# -gt 0 ]; do
             RANDOMIZE_TEMPLATE=false
             shift
             ;;
+        --randomize|--mutate)
+            # Enable per-install template mutation (anti-fingerprint).
+            # В этом форке мутация по умолчанию выключена — флаг включает её обратно.
+            RANDOMIZE_TEMPLATE=true
+            shift
+            ;;
         --force|-f)
             # Force mode - skip DNS validation and interactive prompts
             FORCE_MODE=true
@@ -4653,7 +4659,8 @@ show_help() {
     echo
     echo -e "${WHITE}Caddy Options:${NC}"
     printf "   ${CYAN}%-22s${NC} %s\n" "--h3, --quic" "Enable HTTP/3 (QUIC) — OFF by default"
-    printf "   ${CYAN}%-22s${NC} %s\n" "--no-randomize" "Don't mutate templates on install"
+    printf "   ${CYAN}%-22s${NC} %s\n" "--no-randomize" "Don't mutate templates on install (default)"
+    printf "   ${CYAN}%-22s${NC} %s\n" "--randomize" "Enable per-install mutation (anti-fingerprint)"
     echo
     echo -e "${WHITE}Nginx Options:${NC}"
     printf "   ${CYAN}%-22s${NC} %s\n" "--socket" "Use Unix socket (default)"

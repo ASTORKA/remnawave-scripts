@@ -17,7 +17,7 @@
 - **Проверка Firewall**: Автопроверка UFW, firewalld, iptables
 - **Защита от перезаписи**: Проверка пользовательских файлов и создание бэкапов
 - **Валидация DNS**: Проверка правильности настройки домена
-- **11 AI-шаблонов**: Профессиональные шаблоны для реалистичной маскировки
+- **4 заглушки «кино/сериалы на техработах»**: самодостаточные шаблоны с несбрасываемым оверлеем
 - **Управление сервисами**: Запуск, остановка, перезапуск, логи, статус
 - **Автообновление**: Проверка и установка обновлений скрипта
 
@@ -87,22 +87,22 @@
 
 **Caddy (по умолчанию):**
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ install
 ```
 
 **Nginx с Unix Socket (рекомендуется):**
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx install
 ```
 
 **Nginx с TCP портом:**
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --tcp install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --tcp install
 ```
 
 **Nginx с кастомным портом ACME:**
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --acme-port 15443 install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --acme-port 15443 install
 ```
 
 ### 🚀 Однострочная установка (Force Mode)
@@ -111,23 +111,23 @@ bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal
 
 **Базовая force-установка:**
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --force --domain reality.example.com install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --force --domain reality.example.com install
 ```
 
 **С кастомным портом и шаблоном:**
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --force --domain reality.example.com --port 8443 --template 5 install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --force --domain reality.example.com --port 8443 --template 3 install
 ```
 
 **С ручным wildcard-сертификатом:**
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --force --domain reality.example.com \
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ --nginx --force --domain reality.example.com \
     --ssl-cert /path/to/fullchain.crt --ssl-key /path/to/private.key install
 ```
 
 **Caddy с ручным сертификатом:**
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ --caddy --force --domain reality.example.com \
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ --caddy --force --domain reality.example.com \
     --ssl-cert /path/to/fullchain.crt --ssl-key /path/to/private.key install
 ```
 
@@ -138,7 +138,7 @@ bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal
 | `--force`, `-f` | Пропустить проверку DNS и все интерактивные запросы |
 | `--domain <domain>` | Домен для установки (обязательно с --force) |
 | `--port <port>` | Порт HTTPS (по умолчанию: 9443) |
-| `--template <1-11>` | Номер шаблона (иначе случайный) |
+| `--template <1-4>` | Номер шаблона (иначе случайный/интерактивный выбор) |
 | `--ssl-cert <path>` | Путь к файлу сертификата (fullchain) |
 | `--ssl-key <path>` | Путь к приватному ключу |
 
@@ -147,7 +147,7 @@ bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal
 ### Ручная установка
 
 ```bash
-sudo bash -c "curl -fsSL https://raw.githubusercontent.com/DigneZzZ/remnawave-scripts/main/selfsteal.sh -o /usr/local/bin/selfsteal && chmod +x /usr/local/bin/selfsteal"
+sudo bash -c "curl -fsSL https://raw.githubusercontent.com/ASTORKA/remnawave-scripts/main/selfsteal.sh -o /usr/local/bin/selfsteal && chmod +x /usr/local/bin/selfsteal"
 ```
 
 Затем:
@@ -237,55 +237,62 @@ selfsteal --nginx --acme-port 12345 install
 
 ## Шаблоны сайтов
 
-Команда `template` позволяет выбрать один из 11 AI-генерированных шаблонов, созданных нейросетью специально для реалистичной маскировки трафика:
+Этот форк содержит **4 заглушки** в едином стиле «фильмы и сериалы на технических работах». Каждая страница — самодостаточный киносайт (тёмная тема, сетка постеров) с **несбрасываемым** оверлеем «Идут технические работы» (без кнопки закрытия, не реагирует на Esc/клик, скролл заблокирован).
 
 ### 🎨 Доступные шаблоны:
 
-1. **😂 10gag - Сайт мемов**: Платформа для просмотра мемов с имитацией видеоконтента
-2. **🎬 Converter - Видеостудия-конвертер**: Онлайн сервис для конвертации видео с поддержкой популярных платформ
-3. **📁 Convertit - Конвертер файлов**: Универсальный конвертер с проверкой форматов и симуляцией обработки
-4. **⬇️ Downloader - Даунлоадер**: Сервис загрузок с системой приглашений и проверками
-5. **☁️ FileCloud - Облачное хранилище**: Файлохранилище с красивой формой авторизации и файловым менеджером
-6. **🎮 Games-site - Ретро игровой портал**: Сайт с классическими браузерными играми и сгенерированными ИИ обложками
-7. **🛠️ ModManager - Мод-менеджер для игр**: Имитация сайта для управления модификациями игр
-8. **🚀 SpeedTest - Спидтест**: Тестирование скорости интернет-соединения с русской локализацией
-9. **📺 YouTube - Видеохостинг с капчей**: Платформа для видео с бесконечной капчей и плиточным интерфейсом
-10. **⚠️ 503 Error v1 - Страница ошибки 503**: Стильная страница ошибки с отображением IP-адреса клиента
-11. **⚠️ 503 Error v2 - Страница ошибки 503**: Альтернативный дизайн страницы ошибки
+1. **🎬 FANFILM4K — кино в 4K**: синяя кинопалитра, hero-блок и сетка постеров
+2. **🔴 КиноПульс — фильмы и сериалы**: багряная тема, бегущая строка «в эфире»
+3. **🟣 SerialBox — сериалы онлайн**: фиолетово-бирюзовый, бейджи серий и прогресс просмотра
+4. **🟢 CINEMAX — премиум 4K**: изумруд/золото, крупные постеры премиум-класса
 
-### 🤖 Особенности AI-шаблонов:
+### 🤖 Особенности шаблонов:
 
-- **Полностью созданы нейросетью**: Все HTML, CSS, JavaScript и дизайн
-- **Реалистичная имитация**: Шаблоны имитируют настоящие популярные сервисы
-- **Автоматическое скачивание**: Загружаются напрямую из GitHub репозитория
-- **Случайная установка**: При первой установке автоматически выбирается случайный шаблон
-- **Адаптивный дизайн**: Работают на всех устройствах
-- **Интерактивные элементы**: Функциональные кнопки и формы для реалистичности
+- **Самодостаточные**: весь HTML/CSS/JS встроен инлайн, **без внешних запросов** — не зависят от чужих CDN и ничего не «фонят» в сеть.
+- **Единый сценарий**: все четыре имитируют онлайн-кинотеатр на обслуживании.
+- **Адаптивный дизайн**: корректно отображаются на десктопе и мобильных.
+- **Несбрасываемый оверлей**: уведомление «Технические работы» нельзя закрыть.
 
-### 🔄 Дополнительные опции:
+### 🔢 Выбор шаблона при установке:
 
-- **View Current Template**: Просмотреть информацию о текущем установленном шаблоне
-- **Keep Current Template**: Сохранить текущий шаблон без изменений
+При установке предлагается выбрать конкретный шаблон **или случайный**:
 
-После выбора шаблона можно перезапустить Caddy для применения изменений. Все шаблоны автоматически создают резервную копию предыдущего контента.
+```
+Выберите шаблон-заглушку:
+   0) 🎲 Случайный
+   1) FANFILM4K — кино в 4K
+   2) КиноПульс — фильмы и сериалы
+   3) SerialBox — сериалы онлайн
+   4) CINEMAX — премиум 4K
+```
 
-### 🛡️ Уникализация и защита от фингерпринтинга (с v2.8.0)
+- Ввод `1`–`4` — поставить конкретный шаблон, `0`/Enter — случайный.
+- В неинтерактивном режиме (`--force` или `curl | bash` без TTY) выбирается случайный.
+- Без меню: флаг `--template <1-4>`.
 
-Базовые шаблоны публичны и **байт-в-байт** совпадают у всех, кто их ставит — это позволяет цензору хешировать страницу и заносить в чёрный список. Поэтому при установке шаблон **автоматически мутируется**, чтобы каждый сервер был уникален и не совпадал с публичным оригиналом:
+### 🔄 Управление шаблоном (`selfsteal template`):
 
-- 🎲 **Уникальность каждого инстанса**: случайные `<title>`/бренд/meta, per-install сдвиг палитры (hue-rotate), байт-«шум» в html/css/js, рандомный `?v=`, свежий `favicon.svg` — два сервера никогда не отдают идентичные файлы.
-- 🧹 **Зачистка утечек**: удаляются `README.md`/`*.md`/`*.map` из веб-рута (в них были ссылки на исходный репозиторий), глушится «маяк» на `api.ipify.org` в JS, убираются внешние Google Fonts, чинится битый `/vite.svg`, исправляется плейсхолдерный `site.webmanifest`.
+- **Выбор `1`–`4`** — сменить шаблон, **`r`** — случайный.
+- **View Current Template** — информация о текущем шаблоне.
+- **Keep Current Template** — оставить без изменений.
+
+После выбора шаблона Caddy можно перезапустить для применения; предыдущий контент бэкапится автоматически.
+
+### 🛡️ Уникализация (мутация) — отключена по умолчанию
+
+В апстриме шаблоны публичны и байт-в-байт одинаковы, поэтому там при установке включена автоматическая мутация (сдвиг палитры, рандомный бренд/заголовок и т.п.). В этом форке заглушки имеют **фирменный дизайн**, который не должен перекрашиваться, поэтому мутация **выключена по умолчанию**.
 
 | Опция | Описание |
 |-------|----------|
-| *(по умолчанию)* | Мутация включена — рекомендуется |
-| `--no-randomize` | Отключить мутацию (ставить шаблон «как есть», для отладки/репро) |
+| *(по умолчанию)* | Мутация выключена — шаблон ставится «как есть» |
+| `--randomize` | Включить per-install мутацию (анти-фингерпринт, изменит цвета/бренд) |
+| `--no-randomize` | Явно выключить мутацию (поведение по умолчанию) |
 
-> ⚠️ **Ограничение:** контент, подгружаемый с иностранных CDN (giphy/unsplash/pexels), вшит в минифицированный бандл — убрать его нельзя без поломки страницы. Самые «тихие» шаблоны — самодостаточные (например, `Convertit`). Мутация ломает совпадение по хешу/заголовкам, но не меняет TLS-отпечаток веб-сервера (см. caveat в разделе «Сравнение Caddy vs Nginx»).
+> ℹ️ Поскольку шаблоны самодостаточны и не тянут внешний контент, они уже «тихие». Мутация ломает совпадение по хешу/заголовкам, но меняет фирменные цвета и бренд страницы. TLS-отпечаток веб-сервера она не меняет.
 
 ### 📦 Источник шаблонов
 
-Все шаблоны загружаются из репозитория [sni-templates](https://github.com/SmallPoppa/sni-templates), где содержится полная коллекция AI-генерированных веб-шаблонов с подробными описаниями и превью каждого шаблона. При установке они уникализируются (см. выше).
+Все шаблоны загружаются из этого форка — [sni-templates](https://github.com/ASTORKA/remnawave-scripts/tree/main/sni-templates).
 
 ## Конфигурация Xray Reality
 
@@ -422,7 +429,7 @@ docker exec remnanode ls -la /dev/shm/nginx.sock
 
 ## Кастомизация
 
-- **AI-шаблоны**: Используйте команду `template` для выбора из 11 профессиональных AI-генерированных шаблонов
+- **Шаблоны-заглушки**: Используйте команду `template` для выбора одной из 4 заглушек «кино/сериалы на техработах»
 - **HTML-контент**: Редактируйте файлы в директории установки (`/opt/caddy/html` или `/opt/nginx-selfsteal/html`)
 - **Конфигурация**: Используйте команду `edit` для изменения настроек
 - **Логи**: Доступны через команду `logs`
@@ -527,7 +534,7 @@ selfsteal uninstall
 - [Документация Caddy](https://caddyserver.com/docs/)
 - [Docker Compose документация](https://docs.docker.com/compose/)
 - [Reality Protocol](https://github.com/XTLS/Reality)
-- [SNI Templates - AI-генерированные шаблоны](https://github.com/DigneZzZ/remnawave-scripts/tree/main/sni-templates)
+- [SNI Templates - AI-генерированные шаблоны](https://github.com/ASTORKA/remnawave-scripts/tree/main/sni-templates)
 
 ## Лицензия
 
@@ -537,7 +544,7 @@ MIT License. Подробности в файле [LICENSE](LICENSE).
 
 - **Проект**: [gig.ovh](https://gig.ovh)
 - **Автор**: [DigneZzZ](https://github.com/DigneZzZ)
-- **Репозиторий**: [github.com/DigneZzZ/remnawave-scripts](https://github.com/DigneZzZ/remnawave-scripts)
+- **Репозиторий**: [github.com/ASTORKA/remnawave-scripts](https://github.com/ASTORKA/remnawave-scripts)
 - **Issues**: Открывайте issue на GitHub для вопросов и предложений.
 
 
@@ -546,4 +553,4 @@ MIT License. Подробности в файле [LICENSE](LICENSE).
 Если у вас возникли вопросы или проблемы:
 1. Проверьте раздел "Диагностика" выше
 2. Посмотрите логи контейнера: `docker logs caddy_reality_container`
-3. Создайте Issue в [GitHub репозитории](https://github.com/DigneZzZ/remnawave-scripts/issues)
+3. Создайте Issue в [GitHub репозитории](https://github.com/ASTORKA/remnawave-scripts/issues)

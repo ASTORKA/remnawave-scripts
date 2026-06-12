@@ -23,7 +23,7 @@ bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnawave
 bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnanode.sh) @ install
 
 # Caddy Selfsteal (маскировка Reality)
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ install
 ```
 
 После установки управляйте сервисами командами: `remnawave`, `remnanode` или `selfsteal`.
@@ -306,7 +306,7 @@ bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnanode
 ### Установка
 
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ install
 ```
 
 ### Команды

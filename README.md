@@ -23,7 +23,7 @@ bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnawave
 bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/remnanode.sh) @ install
 
 # Caddy Selfsteal (Reality masking)
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ install
 ```
 
 After installation, manage services with: `remnawave`, `remnanode`, or `selfsteal` commands.
@@ -307,7 +307,7 @@ Deploy Caddy as a **Reality traffic masking** solution with professional website
 ### Installation
 
 ```bash
-bash <(curl -Ls https://github.com/DigneZzZ/remnawave-scripts/raw/main/selfsteal.sh) @ install
+bash <(curl -Ls https://github.com/ASTORKA/remnawave-scripts/raw/main/selfsteal.sh) @ install
 ```
 
 ### Commands
