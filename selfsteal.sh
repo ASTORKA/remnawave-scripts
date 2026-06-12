@@ -108,13 +108,19 @@ LOG_FILE="/var/log/selfsteal.log"
 DEFAULT_PORT="9443"
 
 # Template Registry (id:folder:emoji:name)
-# Форк: единственный шаблон — FANFILM4K (киносайт + оверлей «Технические работы»).
+# Форк: набор заглушек «кино/сериалы на технических работах».
 declare -A TEMPLATE_FOLDERS=(
     ["1"]="fanfilm4k"
+    ["2"]="kinopulse"
+    ["3"]="serialbox"
+    ["4"]="cinemax"
 )
 
 declare -A TEMPLATE_NAMES=(
-    ["1"]="🎬 FANFILM4K — Технические работы"
+    ["1"]="🎬 FANFILM4K — кино в 4K (техработы)"
+    ["2"]="🔴 КиноПульс — фильмы и сериалы (техработы)"
+    ["3"]="🟣 SerialBox — сериалы онлайн (техработы)"
+    ["4"]="🟢 CINEMAX — премиум 4K (техработы)"
 )
 
 # Color definitions
@@ -1353,14 +1359,14 @@ while [ $# -gt 0 ]; do
                 FORCE_TEMPLATE="$2"
                 shift 2
             else
-                log_error "--template requires a template number (only 1 available)"
+                log_error "--template requires a template number (1-4)"
                 exit 1
             fi
             ;;
         --template=*)
             FORCE_TEMPLATE="${1#*=}"
             if ! [[ "$FORCE_TEMPLATE" =~ ^[0-9]+$ ]]; then
-                log_error "--template requires a template number (only 1 available)"
+                log_error "--template requires a template number (1-4)"
                 exit 1
             fi
             shift
@@ -2934,17 +2940,17 @@ install_command() {
     echo -e "${WHITE}🎨 Installing Template${NC}"
     echo -e "${GRAY}$(printf '─%.0s' $(seq 1 35))${NC}"
     
-    # List of available templates (форк: единственный шаблон)
-    local templates=("1")
-    local template_names=("FANFILM4K")
-    
+    # Список доступных шаблонов (форк: кино/сериалы «на техработах»)
+    local templates=("1" "2" "3" "4")
+    local template_names=("FANFILM4K — кино в 4K" "КиноПульс — фильмы и сериалы" "SerialBox — сериалы онлайн" "CINEMAX — премиум 4K")
+
     local selected_template=""
     local selected_name=""
     local installed_template=""
-    
-    # Check if template was specified via --template flag
+
     if [ -n "$FORCE_TEMPLATE" ]; then
-        if [[ "$FORCE_TEMPLATE" =~ ^[1-9]$|^1[01]$ ]]; then
+        # Шаблон задан флагом --template <n>
+        if [[ "$FORCE_TEMPLATE" =~ ^[1-4]$ ]]; then
             selected_template="$FORCE_TEMPLATE"
             selected_name="${template_names[$((FORCE_TEMPLATE - 1))]}"
             log_info "Using specified template: $selected_name"
@@ -2954,12 +2960,33 @@ install_command() {
             selected_template=${templates[$random_index]}
             selected_name=${template_names[$random_index]}
         fi
-    else
-        # Select random template
+    elif [ "$FORCE_MODE" = true ] || [ ! -t 0 ]; then
+        # Неинтерактивный режим (--force / pipe) — случайный выбор
         local random_index=$((RANDOM % ${#templates[@]}))
         selected_template=${templates[$random_index]}
         selected_name=${template_names[$random_index]}
         echo -e "${CYAN}🎲 Selected template: ${selected_name}${NC}"
+    else
+        # Интерактивный выбор: конкретный шаблон или случайный
+        echo -e "${WHITE}Выберите шаблон-заглушку:${NC}"
+        echo -e "   ${CYAN}0)${NC} 🎲 Случайный"
+        local _i
+        for _i in "${!templates[@]}"; do
+            echo -e "   ${CYAN}$((_i + 1)))${NC} ${template_names[$_i]}"
+        done
+        echo
+        local tpl_choice
+        read -p "$(echo -e "${CYAN}Ваш выбор [0-${#templates[@]}], Enter = случайный: ${NC}")" tpl_choice
+        if [[ "$tpl_choice" =~ ^[1-4]$ ]]; then
+            selected_template="$tpl_choice"
+            selected_name="${template_names[$((tpl_choice - 1))]}"
+            log_info "Выбран шаблон: $selected_name"
+        else
+            local random_index=$((RANDOM % ${#templates[@]}))
+            selected_template=${templates[$random_index]}
+            selected_name=${template_names[$random_index]}
+            echo -e "${CYAN}🎲 Случайный шаблон: ${selected_name}${NC}"
+        fi
     fi
     echo
     
@@ -3753,7 +3780,7 @@ show_template_options() {
     echo -e "${WHITE}Select template type:${NC}"
     
     # Dynamically list templates from registry
-    for i in $(seq 1 11); do
+    for i in $(seq 1 4); do
         local name="${TEMPLATE_NAMES[$i]:-}"
         if [ -n "$name" ]; then
             printf "   ${WHITE}%-3s${NC} ${CYAN}%s${NC}\n" "$i)" "$name"
@@ -3845,10 +3872,10 @@ template_command() {
         clear
         show_template_options
         
-        read -p "Select template option [0-11, v, k, r]: " choice
+        read -p "Select template option [0-4, v, k, r]: " choice
         
         case "$choice" in
-            [1-9]|10|11)
+            [1-4])
                 # Check if template exists in registry
                 if [[ -n "${TEMPLATE_NAMES[$choice]:-}" ]]; then
                     apply_template_and_restart "$choice"
@@ -3868,7 +3895,7 @@ template_command() {
                 ;;
             r|R)
                 # Random template
-                local random_id=$((RANDOM % 11 + 1))
+                local random_id=$((RANDOM % 4 + 1))
                 echo -e "${CYAN}🎲 Randomly selected: ${TEMPLATE_NAMES[$random_id]}${NC}"
                 apply_template_and_restart "$random_id"
                 ;;
@@ -4637,7 +4664,7 @@ show_help() {
     printf "   ${CYAN}%-22s${NC} %s\n" "--force, -f" "Skip DNS validation and prompts"
     printf "   ${CYAN}%-22s${NC} %s\n" "--domain <domain>" "Domain for installation"
     printf "   ${CYAN}%-22s${NC} %s\n" "--port <port>" "HTTPS port (default: 9443)"
-    printf "   ${CYAN}%-22s${NC} %s\n" "--template <1>" "Template number to install"
+    printf "   ${CYAN}%-22s${NC} %s\n" "--template <1-4>" "Template number to install"
     echo
     echo -e "${WHITE}Manual SSL Certificate:${NC}"
     printf "   ${CYAN}%-22s${NC} %s\n" "--ssl-cert <path>" "Path to fullchain certificate"
