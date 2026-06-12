@@ -18,7 +18,7 @@ fi
 
 # Debug mode - set via --debug flag
 DEBUG_MODE=false
-SCRIPT_URL="https://raw.githubusercontent.com/dignezzz/remnawave-scripts/main/selfsteal.sh"
+SCRIPT_URL="https://raw.githubusercontent.com/ASTORKA/remnawave-scripts/main/selfsteal.sh"
 UPDATE_URL="$SCRIPT_URL"
 
 while [[ $# -gt 0 ]]; do
@@ -81,10 +81,10 @@ WEB_SERVER_CONFIG_FILE=""
 # is a needless fingerprint. Enable explicitly with --h3 / --quic if wanted.
 ENABLE_H3=false
 
-# Per-install template mutation (anti-fingerprint) — ENABLED by default.
-# Makes each install byte-unique (title/brand/colors/noise) and strips known
-# provenance leaks (README, beacons, placeholder manifest). Disable: --no-randomize
-RANDOMIZE_TEMPLATE=true
+# Per-install template mutation (anti-fingerprint).
+# DISABLED in this fork: единственный шаблon FANFILM4K имеет фирменный дизайн,
+# который не должен перекрашиваться/переименовываться. Включить: --randomize
+RANDOMIZE_TEMPLATE=false
 
 # Socket Configuration (nginx only)
 # By default uses Unix socket for better performance
@@ -108,32 +108,13 @@ LOG_FILE="/var/log/selfsteal.log"
 DEFAULT_PORT="9443"
 
 # Template Registry (id:folder:emoji:name)
+# Форк: единственный шаблон — FANFILM4K (киносайт + оверлей «Технические работы»).
 declare -A TEMPLATE_FOLDERS=(
-    ["1"]="10gag"
-    ["2"]="convertit"
-    ["3"]="converter"
-    ["4"]="downloader"
-    ["5"]="filecloud"
-    ["6"]="games-site"
-    ["7"]="modmanager"
-    ["8"]="speedtest"
-    ["9"]="YouTube"
-    ["10"]="503-1"
-    ["11"]="503-2"
+    ["1"]="fanfilm4k"
 )
 
 declare -A TEMPLATE_NAMES=(
-    ["1"]="😂 10gag - Сайт мемов"
-    ["2"]="📁 Convertit - Конвертер файлов"
-    ["3"]="🎬 Converter - Видеостудия-конвертер"
-    ["4"]="⬇️ Downloader - Даунлоадер"
-    ["5"]="☁️ FileCloud - Облачное хранилище"
-    ["6"]="🎮 Games-site - Ретро игровой портал"
-    ["7"]="🛠️ ModManager - Мод-менеджер для игр"
-    ["8"]="🚀 SpeedTest - Спидтест"
-    ["9"]="📺 YouTube - Видеохостинг с капчей"
-    ["10"]="⚠️ 503 Error - Страница ошибки v1"
-    ["11"]="⚠️ 503 Error - Страница ошибки v2"
+    ["1"]="🎬 FANFILM4K — Технические работы"
 )
 
 # Color definitions
@@ -1372,14 +1353,14 @@ while [ $# -gt 0 ]; do
                 FORCE_TEMPLATE="$2"
                 shift 2
             else
-                log_error "--template requires a template number (1-11)"
+                log_error "--template requires a template number (only 1 available)"
                 exit 1
             fi
             ;;
         --template=*)
             FORCE_TEMPLATE="${1#*=}"
             if ! [[ "$FORCE_TEMPLATE" =~ ^[0-9]+$ ]]; then
-                log_error "--template requires a template number (1-11)"
+                log_error "--template requires a template number (only 1 available)"
                 exit 1
             fi
             shift
@@ -2953,9 +2934,9 @@ install_command() {
     echo -e "${WHITE}🎨 Installing Template${NC}"
     echo -e "${GRAY}$(printf '─%.0s' $(seq 1 35))${NC}"
     
-    # List of available templates
-    local templates=("1" "2" "3" "4" "5" "6" "7" "8" "9" "10" "11")
-    local template_names=("10gag" "Converter" "Convertit" "Downloader" "FileCloud" "Games-site" "ModManager" "SpeedTest" "YouTube" "503 Error v1" "503 Error v2")
+    # List of available templates (форк: единственный шаблон)
+    local templates=("1")
+    local template_names=("FANFILM4K")
     
     local selected_template=""
     local selected_name=""
@@ -3411,7 +3392,7 @@ download_via_git() {
     local temp_dir="/tmp/selfsteal-template-$$"
     create_dir_safe "$temp_dir" || return 1
     
-    if ! git clone --filter=blob:none --sparse "https://github.com/DigneZzZ/remnawave-scripts.git" "$temp_dir" 2>/dev/null; then
+    if ! git clone --filter=blob:none --sparse "https://github.com/ASTORKA/remnawave-scripts.git" "$temp_dir" 2>/dev/null; then
         rm -rf "$temp_dir"
         return 1
     fi
@@ -3443,7 +3424,7 @@ download_via_api() {
     
     echo -e "${WHITE}📦 Using wget for recursive download...${NC}"
     
-    local api_url="https://api.github.com/repos/DigneZzZ/remnawave-scripts/git/trees/main?recursive=1"
+    local api_url="https://api.github.com/repos/ASTORKA/remnawave-scripts/git/trees/main?recursive=1"
     local tree_data
     tree_data=$(curl -s "$api_url" 2>/dev/null)
     
@@ -3464,7 +3445,7 @@ download_via_api() {
             [ -z "$file_path" ] && continue
             
             local relative_path="${file_path#sni-templates/$template_folder/}"
-            local file_url="https://raw.githubusercontent.com/DigneZzZ/remnawave-scripts/main/$file_path"
+            local file_url="https://raw.githubusercontent.com/ASTORKA/remnawave-scripts/main/$file_path"
             
             local file_dir
             file_dir=$(dirname "$relative_path")
@@ -3491,7 +3472,7 @@ download_via_curl_fallback() {
     
     echo -e "${WHITE}📦 Using curl fallback method...${NC}"
     
-    local base_url="https://raw.githubusercontent.com/DigneZzZ/remnawave-scripts/main/sni-templates/$template_folder"
+    local base_url="https://raw.githubusercontent.com/ASTORKA/remnawave-scripts/main/sni-templates/$template_folder"
     local common_files=("index.html" "favicon.ico" "favicon.svg" "site.webmanifest" "apple-touch-icon.png" "favicon-96x96.png")
     local asset_files=("assets/style.css" "assets/script.js" "assets/main.js")
     
@@ -4656,7 +4637,7 @@ show_help() {
     printf "   ${CYAN}%-22s${NC} %s\n" "--force, -f" "Skip DNS validation and prompts"
     printf "   ${CYAN}%-22s${NC} %s\n" "--domain <domain>" "Domain for installation"
     printf "   ${CYAN}%-22s${NC} %s\n" "--port <port>" "HTTPS port (default: 9443)"
-    printf "   ${CYAN}%-22s${NC} %s\n" "--template <1-11>" "Template number to install"
+    printf "   ${CYAN}%-22s${NC} %s\n" "--template <1>" "Template number to install"
     echo
     echo -e "${WHITE}Manual SSL Certificate:${NC}"
     printf "   ${CYAN}%-22s${NC} %s\n" "--ssl-cert <path>" "Path to fullchain certificate"
